@@ -33,8 +33,8 @@ public class Phone extends ScrollPane
         this.messageTable = (Table) getActor();
         this.setScrollingDisabled(true, false);
 
-        readTweetFile("trump.txt", trumpTweets);
-        readTweetFile("kim.txt", kimTweets);
+        readTweetFile("messages/trump.txt", trumpTweets);
+        readTweetFile("messages/kim.txt", kimTweets);
     }
 
     public void update(float delta)
@@ -141,7 +141,7 @@ public class Phone extends ScrollPane
 
             while (line != null) {
                 Tweet tweet = new Tweet();
-                tweet.setAuthor(filename.equals("trump.txt") ? Author.TRUMP :Author.KIM);
+                tweet.setAuthor(filename.contains("trump.txt") ? Author.TRUMP :Author.KIM);
                 tweet.setContents(line);
                 tweet.setTweetId(id++);
                 list.add(tweet);

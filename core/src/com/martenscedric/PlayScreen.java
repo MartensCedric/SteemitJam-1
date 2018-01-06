@@ -9,7 +9,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.UIUtils;
+
 
 import javax.rmi.CORBA.Util;
 
@@ -24,6 +31,10 @@ public class PlayScreen extends StageScreen {
     private Phone phone;
     private float battery = 1.0f;
     private float warningNuke = 0f;
+    private ImageButton imageButton;
+    private boolean switchOn = false;
+    private TextureRegionDrawable textureSwitchOn;
+    private TextureRegionDrawable textureSwitchOff;
 
     public PlayScreen(GameManager gameManager) {
         super(gameManager);
@@ -34,13 +45,36 @@ public class PlayScreen extends StageScreen {
         this.phone = new Phone(gameManager, Utils.getDefaultSkin());
         this.phone.setX(WIDTH * 0.5f);
         this.phone.setY(HEIGHT/2 - phone.getHeight()/2 -10);
+
+        this.textureSwitchOn = new TextureRegionDrawable(new TextureRegion(assetManager.get("art/switch_on.png", Texture.class)));
+        this.textureSwitchOff = new TextureRegionDrawable(new TextureRegion(assetManager.get("art/switch_off.png", Texture.class)));
+
+        ImageButton.ImageButtonStyle imgBtnStyle = new ImageButton.ImageButtonStyle(null, null, null, textureSwitchOff, null, textureSwitchOn);
+        this.imageButton = new ImageButton(imgBtnStyle);
+        this.imageButton.setX(200);
+        this.imageButton.setY(25);
+        this.imageButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                switchOn = !switchOn;
+                if(switchOn)
+                {
+                    battery -= 0.01f;
+                }
+            }
+        });
+
+        this.imageButton.setWidth(80);
+        this.imageButton.setHeight(112);
+        this.getStage().addActor(imageButton);
         this.getStage().addActor(phone);
     }
 
     @Override
     public void render(float delta) {
 
-        battery -= delta/25.0f;
+        if(switchOn)
+            battery -= delta/25.0f;
 
         warningNuke -= delta;
         if(warningNuke < 0)
@@ -117,7 +151,6 @@ public class PlayScreen extends StageScreen {
                     HEIGHT - Gdx.input.getY() + 40);
             batch.end();
         }
-
     }
 
     @Override

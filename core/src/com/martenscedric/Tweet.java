@@ -8,6 +8,7 @@ public class Tweet
     //Linked media is done like this ~/media
     private String contents;
     private float generatedHeat;
+    private float minHeat;
 
 
     public Author getAuthor() {
@@ -32,5 +33,13 @@ public class Tweet
 
     public void setGeneratedHeat(float generatedHeat) {
         this.generatedHeat = generatedHeat;
+    }
+
+    public float getMinHeat() {
+        return minHeat;
+    }
+
+    public void setMinHeat(float minHeat) {
+        this.minHeat = minHeat;
     }
 }

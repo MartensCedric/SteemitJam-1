@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.utils.Align;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,7 @@ public class Phone extends ScrollPane
 
     @Override
     public float getHeight() {
-        return HEIGHT * 0.8f;
+        return HEIGHT * 0.8f - 20;
     }
 
     private class TweetWidget extends WidgetGroup
@@ -53,10 +54,13 @@ public class Phone extends ScrollPane
         {
             Texture textureLeader = gameManager.assetManager.get("art/" + tweet.getAuthor().name().toLowerCase() + ".png", Texture.class);
             profilePic = new Image(textureLeader);
+            profilePic.setWidth(64);
+            profilePic.setHeight(64);
+            this.profilePic.setX(15);
             this.lblText = new Label(tweet.getContents(), skin);
             this.lblText.setWrap(true);
             this.lblText.setWidth(200);
-
+            lblText.setAlignment(Align.bottomLeft);
             lblText.setX(100);
         }
 
@@ -69,7 +73,7 @@ public class Phone extends ScrollPane
 
         @Override
         public float getMinHeight() {
-            return 50;
+            return Math.max(lblText.getPrefHeight() + 50, profilePic.getImageHeight());
         }
     }
 }

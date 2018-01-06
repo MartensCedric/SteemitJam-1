@@ -7,8 +7,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import java.util.List;
-
 import static com.martenscedric.GameManager.HEIGHT;
 import static com.martenscedric.GameManager.WIDTH;
 
@@ -45,8 +43,19 @@ public class PlayScreen extends StageScreen {
         batch.draw(textureNukeButton, 50, HEIGHT/2 - textureNukeButton.getHeight()/2);
         batch.draw(texturePhoneCover, 380, HEIGHT/2 - texturePhoneCover.getHeight()/2 + 1);
         batch.draw(textureSwitterBanner, 400, 520);
+
         batch.end();
         super.render(delta);
+        batch.begin();
+        if(phone.isNuked())
+        {
+            Texture textureButtonPress = assetManager.get("art/button-press.png", Texture.class);
+            batch.draw(textureButtonPress, 0, HEIGHT/2 - textureButtonPress.getHeight()/2);
+
+            Texture textureNoise = assetManager.get("art/noise.png", Texture.class);
+            batch.draw(textureNoise, 400, HEIGHT/2 - textureNoise.getHeight()/2);
+        }
+        batch.end();
     }
 
     @Override

@@ -25,6 +25,8 @@ public class Phone extends ScrollPane
     private float heat = 0;
     private float timeSinceLastTweet = 0;
 
+    private boolean nuked = false;
+
     public Phone(GameManager gameManager, Skin skin) {
         super(new Table(skin), skin);
         this.gameManager = gameManager;
@@ -41,7 +43,12 @@ public class Phone extends ScrollPane
         if(new Random().nextInt(60) == 0)
             System.out.println(heat);
 
-        if(timeSinceLastTweet > 5 - heat * 2)
+        if(!nuked)
+        {
+            nuked = new Random().nextFloat() * 1000 < heat;
+        }
+
+        if(!nuked && timeSinceLastTweet > 5 - heat * 2)
         {
             Author author = Author.values()[new Random().nextInt(2)];
 
@@ -143,5 +150,10 @@ public class Phone extends ScrollPane
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isNuked()
+    {
+        return nuked;
     }
 }

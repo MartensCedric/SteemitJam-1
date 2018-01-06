@@ -31,6 +31,42 @@ com.badlogic.gdx.graphics.Color: {
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
+	scrollBarTrack: {
+		name: white
+		color: {
+			r: 0
+			g: 0
+			b: 0
+			a: 0.6
+		}
+	}
+	smoothGray: {
+		name: white
+		color: {
+			r: 0.5
+			g: 0.5
+			b: 0.5
+			a: 0.6
+		}
+	}
+	semiSolidGray: {
+		name: white
+		color: {
+			r: 0.5
+			g: 0.5
+			b: 0.5
+			a: 0.85
+		}
+	}
+	grayBG: {
+		name: white
+		color: {
+			r: 0.2
+			g: 0.2
+			b: 0.2
+			a: 1
+		}
+	}
 	dialogDim: {
 		name: white
 		color: {
@@ -64,6 +100,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
 		font: default-font
 		fontColor: white
+		background: default-round-large
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
@@ -81,7 +118,6 @@ com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
 	}
 	default-vertical: {
 		background: default-slider
-		knob: default-round-large
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
@@ -109,7 +145,6 @@ com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
 	}
 	default-vertical: {
 		background: default-slider
-		knob: default-round-large
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.SplitPane$SplitPaneStyle: {
@@ -135,6 +170,13 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		down: default-round-down
 		checked: default-round-down
 	}
+	flat: {
+		font: default-font
+		fontColor: white
+		up: pale
+		down: dark
+		checked: dark
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 	default: {
@@ -155,7 +197,6 @@ com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.Touchpad$TouchpadStyle: {
 	default: {
 		background: default-pane
-		knob: default-round-large
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Tree$TreeStyle: {

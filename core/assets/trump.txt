@@ -1,15 +1,16 @@
-Ariana Huffington is unattractive, both inside and out. I fully understand why her former husband left her for a man – he made a good decision.
-The beauty of me is that I’m very rich.
-It’s freezing and snowing in New York – we need global warming!
-I’ve said if Ivanka weren’t my daughter, perhaps I’d be dating her.
-Despite the constant negative press covfefe
-I have never seen a thin person drinking Diet Coke.
-My use of social media is not presidential – it’s MODERN DAY PRESIDENTIAL. Make America Great Again!
-The point is, you can never be too greedy.
-My Twitter has become so powerful that I can actually make my enemies tell the truth.
-My IQ is one of the highest — and you all know it! Please don’t feel so stupid or insecure; it’s not your fault.
-I will build a great wall – and nobody builds walls better than me, believe me – and I’ll build them very inexpensively. I will build a great, great wall on our southern border, and I will make Mexico pay for that wall. Mark my words.
-You’re disgusting.
-Sad.
-Why can’t we use nuclear weapons?
-Fake news is at an all time high. Where is their apology to me for all of the incorrect stories???
+Ariana Huffington is unattractive, both inside and out. I fully understand why her former husband left her for a man – he made a good decision.[0,0.01]
+The beauty of me is that I’m very rich.[0,0.02]
+It’s freezing and snowing in New York – we need global warming![0,0.02]
+I’ve said if Ivanka weren’t my daughter, perhaps I’d be dating her.[0,0.02]
+Despite the constant negative press covfefe.[0.01,0.02]
+I have never seen a thin person drinking Diet Coke.[0,0.02]
+My use of social media is not presidential – it’s MODERN DAY PRESIDENTIAL. Make America Great Again![0.05,0.02]
+The point is, you can never be too greedy.[0.03,0.03]
+My Twitter has become so powerful that I can actually make my enemies tell the truth.[0.1,0.03]
+My IQ is one of the highest — and you all know it! Please don’t feel so stupid or insecure; it’s not your fault.[0.05,0.03]
+I will build a great wall – and nobody builds walls better than me, believe me – and I’ll build them very inexpensively. I will build a great, great wall on our southern border, and I will make Mexico pay for that wall. Mark my words.[0.1,0.15]
+You’re disgusting.[0.1,0.03]
+Sad.[0.1,0.02]
+Why can’t we use nuclear weapons?[0.15,0.15]
+Fake news is at an all time high. Where is their apology to me for all of the incorrect stories???[0.1,0.05]
+North Korean Leader Kim Jong Un just stated that the “Nuclear Button is on his desk at all times.” Will someone from his depleted and food starved regime please inform him that I too have a Nuclear Button, but it is a much bigger & more powerful one than his, and my Button works![0.15,0.15]

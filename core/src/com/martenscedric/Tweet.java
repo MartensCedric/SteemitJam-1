@@ -9,7 +9,7 @@ public class Tweet
     private String contents;
     private float generatedHeat;
     private float minHeat;
-
+    private int tweetId;
 
     public Author getAuthor() {
         return author;
@@ -24,7 +24,11 @@ public class Tweet
     }
 
     public void setContents(String contents) {
-        this.contents = contents;
+        String[] tweetContents = contents.split("\\[");
+        String[] values = tweetContents[1].split(",");
+        minHeat = Float.parseFloat(values[0]);
+        generatedHeat = Float.parseFloat(values[1].substring(0, values[1].length() -1));
+        this.contents = tweetContents[0];
     }
 
     public float getGeneratedHeat() {
@@ -41,5 +45,28 @@ public class Tweet
 
     public void setMinHeat(float minHeat) {
         this.minHeat = minHeat;
+    }
+
+    public int getTweetId() {
+        return tweetId;
+    }
+
+    public void setTweetId(int tweetId) {
+        this.tweetId = tweetId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Tweet tweet = (Tweet) o;
+
+        return tweetId == tweet.tweetId;
+    }
+
+    @Override
+    public int hashCode() {
+        return tweetId;
     }
 }

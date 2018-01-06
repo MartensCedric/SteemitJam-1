@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 
 import java.util.List;
 
@@ -16,33 +15,23 @@ import static com.martenscedric.GameManager.WIDTH;
 public class PlayScreen extends StageScreen {
 
     private Batch batch;
-    private Phone phone;
-    private GameManager gameManager;
     private AssetManager assetManager;
+    private Phone phone;
 
-    public PlayScreen(GameManager gameManager, List<Tweet> trumpTweets, List<Tweet> kimTweets) {
+    public PlayScreen(GameManager gameManager) {
         super(gameManager);
-        this.gameManager = gameManager;
         this.assetManager = gameManager.assetManager;
         this.batch = new SpriteBatch();
         this.phone = new Phone(gameManager, Utils.getDefaultSkin());
         this.phone.setX(WIDTH * 0.5f);
         this.phone.setY(HEIGHT/2 - phone.getHeight()/2 -10);
-
-        for(int i = 0; i < trumpTweets.size(); i++)
-        {
-            phone.addTweet(trumpTweets.get(i));
-
-            if(kimTweets.size() > i)
-            {
-                phone.addTweet(kimTweets.get(i));
-            }
-        }
         this.getStage().addActor(phone);
     }
 
     @Override
     public void render(float delta) {
+
+        this.phone.update(delta);
         Gdx.gl.glClearColor(254f/255f, 231f/255f, 97f/255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 

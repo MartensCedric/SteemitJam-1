@@ -23,7 +23,7 @@ public class Phone extends ScrollPane
     private List<Tweet> kimTweets = new ArrayList<>();
 
     private float heat = 0;
-    private float timeSinceLastTweet = 0;
+    private float timeSinceLastTweet = 10;
 
     private boolean nuked = false;
 
@@ -48,7 +48,7 @@ public class Phone extends ScrollPane
             nuked = new Random().nextFloat() * 1000 < heat;
         }
 
-        if(!nuked && timeSinceLastTweet > 5 - heat * 2)
+        if(!nuked && timeSinceLastTweet > 8 - heat * 2)
         {
             Author author = Author.values()[new Random().nextInt(2)];
 

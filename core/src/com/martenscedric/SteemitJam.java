@@ -19,6 +19,7 @@ public class SteemitJam extends SceneManager {
 		this.assetManager.load("art/switter-banner.png", Texture.class);
 		this.assetManager.load("art/button-press.png", Texture.class);
 		this.assetManager.load("art/noise.png", Texture.class);
+		this.assetManager.load("art/battery.png", Texture.class);
 
 		this.assetManager.finishLoading();
 

@@ -9,7 +9,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.foregroundFPS = 60;
 		config.backgroundFPS = 60;
-		config.width = 600;
+		config.width = 800;
 		config.height = 600;
 		new LwjglApplication(new SteemitJam(), config);
 	}

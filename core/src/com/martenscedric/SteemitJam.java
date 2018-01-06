@@ -10,9 +10,13 @@ public class SteemitJam extends SceneManager {
 		super.create();
 		this.assetManager = new AssetManager();
 
+		this.assetManager.finishLoading();
+
 		GameManager gameManager = new GameManager();
 		gameManager.assetManager = assetManager;
 		gameManager.sceneManager = this;
+
+		this.pushScreen(new PlayScreen(gameManager));
 	}
 
 	@Override

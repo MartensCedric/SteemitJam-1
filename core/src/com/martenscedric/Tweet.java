@@ -2,12 +2,6 @@ package com.martenscedric;
 
 public class Tweet
 {
-    private enum Author
-    {
-        TRUMP,
-        KIM
-    }
-
     private Author author;
 
     //Retweets will start with (something)

@@ -17,7 +17,6 @@ public abstract class StageScreen implements Screen
     private Stage stage;
     private SceneManager sceneManager;
 
-
     public StageScreen(GameManager gameManager) {
         stage = new Stage(new StretchViewport(WIDTH, HEIGHT));
         this.sceneManager = gameManager.sceneManager;

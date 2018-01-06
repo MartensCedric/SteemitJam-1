@@ -1,6 +1,7 @@
 package com.martenscedric;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 
 public class SteemitJam extends SceneManager {
 
@@ -9,7 +10,9 @@ public class SteemitJam extends SceneManager {
 	public void create () {
 		super.create();
 		this.assetManager = new AssetManager();
-
+		this.assetManager.load("art/kim.png", Texture.class);
+		this.assetManager.load("art/trump.png", Texture.class);
+		this.assetManager.load("art/button-background.png", Texture.class);
 		this.assetManager.finishLoading();
 
 		GameManager gameManager = new GameManager();

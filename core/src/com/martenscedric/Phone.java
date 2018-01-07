@@ -41,8 +41,6 @@ public class Phone extends ScrollPane
     public void update(float delta)
     {
         timeSinceLastTweet+=delta;
-        if(new Random().nextInt(60) == 0)
-            System.out.println(heat);
 
         if(!nuked)
         {
@@ -56,27 +54,18 @@ public class Phone extends ScrollPane
         {
             Author author = Author.values()[new Random().nextInt(2)];
 
-            if(author == Author.TRUMP)
+            List<Tweet> availableTweets = new ArrayList<>(author == Author.TRUMP ? trumpTweets : kimTweets);
+            availableTweets.removeIf(t -> t.getMinHeat() > heat);
+
+            if(!availableTweets.isEmpty())
             {
-                List<Tweet> availableTweets = new ArrayList<>(trumpTweets);
-                availableTweets.removeIf(t -> t.getMinHeat() > heat);
-                System.out.println("Trump has " + availableTweets.size() + " available tweets!");
-
                 Tweet tweet = availableTweets.get(new Random().nextInt(availableTweets.size()));
-                trumpTweets.removeIf(t -> t.getTweetId() == tweet.getTweetId());
+                if(author == Author.TRUMP)
+                    trumpTweets.removeIf(t -> t.getTweetId() == tweet.getTweetId());
+                else kimTweets.removeIf(t -> t.getTweetId() == tweet.getTweetId());
 
                 addTweet(tweet);
-                heat+=tweet.getGeneratedHeat();
-            }else{
-                List<Tweet> availableTweets = new ArrayList<>(kimTweets);
-                availableTweets.removeIf(t -> t.getMinHeat() > heat);
-                System.out.println("Kim has " + availableTweets.size() + " available tweets!");
-
-                Tweet tweet = availableTweets.get(new Random().nextInt(availableTweets.size()));
-                kimTweets.removeIf(t -> t.getTweetId() == tweet.getTweetId());
-
-                addTweet(tweet);
-                heat+=tweet.getGeneratedHeat();
+                heat += tweet.getGeneratedHeat();
             }
 
             heat *= 1.15f;

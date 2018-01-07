@@ -13,8 +13,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+
+import java.util.Random;
 
 import static com.martenscedric.GameManager.HEIGHT;
 import static com.martenscedric.GameManager.WIDTH;
@@ -24,6 +27,7 @@ public class PlayScreen extends StageScreen {
     private Batch batch;
     private ShapeRenderer shapeRenderer;
     private AssetManager assetManager;
+    private GameManager gameManager;
     private Phone phone;
     private float battery = 1.0f;
     private float warningNuke = 0f;
@@ -33,9 +37,24 @@ public class PlayScreen extends StageScreen {
     private TextureRegionDrawable textureSwitchOff;
     private Animator animator;
     private AnimationSequence<TextureRegion> animElectric;
+    private float zapHand = 0;
+    private float endScreen = 0;
+    private float timeSinceStart = 0;
+    private Label lblTime;
+    private Label lblTimeFinal;
 
     public PlayScreen(GameManager gameManager) {
         super(gameManager);
+        this.gameManager = gameManager;
+        this.lblTime = new Label("", Utils.getDefaultSkin().get("displaytime", Label.LabelStyle.class));
+        this.lblTimeFinal = new Label("", Utils.getDefaultSkin().get("displayfinal", Label.LabelStyle.class));
+
+        this.lblTime.setX(15);
+        this.lblTime.setY(HEIGHT - 25);
+
+        this.lblTimeFinal.setY(HEIGHT/2);
+        this.lblTimeFinal.setVisible(false);
+
         this.assetManager = gameManager.assetManager;
         this.animator = new Animator();
         this.animator.initializeAnimator(assetManager);
@@ -48,9 +67,15 @@ public class PlayScreen extends StageScreen {
         this.phone.setX(WIDTH * 0.5f);
         this.phone.setY(HEIGHT/2 - phone.getHeight()/2 -10);
         this.phone.setOnNukeButtonPress(() -> {
-            if(!switchOn || battery <= 0)
+            if(zapHand <= 0 && !phone.isNuked())
             {
-                phone.stop();
+                zapHand = 1f;
+                if(!switchOn || battery <= 0)
+                {
+                    gameManager.soundMap.get("button-press").play();
+                    phone.stop();
+                    endScreen = 1f;
+                }
             }
         });
 
@@ -67,8 +92,10 @@ public class PlayScreen extends StageScreen {
                 switchOn = !switchOn;
                 if(switchOn)
                 {
-                    battery -= 0.01f;
+                    battery -= 0.04f;
                 }
+                gameManager.soundMap.get("switch-flick").play(0.25f,
+                        new Random().nextFloat() * (switchOn ? -0.15f : 0.15f) + 1f, 0);
             }
         });
 
@@ -76,6 +103,8 @@ public class PlayScreen extends StageScreen {
         this.imageButton.setHeight(112);
         this.getStage().addActor(imageButton);
         this.getStage().addActor(phone);
+        this.getStage().addActor(lblTime);
+        this.getStage().addActor(lblTimeFinal);
     }
 
     @Override
@@ -90,11 +119,31 @@ public class PlayScreen extends StageScreen {
             warningNuke = 0;
         }
 
+        timeSinceStart+=delta;
+
+        zapHand -= delta / 3.0f;
+        if(zapHand  < 0)
+        {
+            zapHand = 0;
+        }
+
         if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)
                 && Gdx.input.getX() >= 100 && Gdx.input.getX() < 300
-                && Gdx.input.getY() >= HEIGHT/2 - 100 && Gdx.input.getY() < HEIGHT/2 + 100)
+                && Gdx.input.getY() >= HEIGHT/2 - 100 && Gdx.input.getY() < HEIGHT/2 + 100
+                && !phone.isNuked())
         {
             warningNuke = 3f;
+        }
+
+        if(endScreen > 0)
+        {
+            endScreen -= delta/7.5f;
+
+            if(endScreen < 0)
+            {
+                this.dispose();
+                this.gameManager.sceneManager.pushScreen(new PlayScreen(gameManager));
+            }
         }
 
         this.animElectric.update(delta);
@@ -121,14 +170,18 @@ public class PlayScreen extends StageScreen {
         batch.end();
         super.render(delta);
         batch.begin();
-        //if(phone.isNuked())
-        //{
-            //Texture textureButtonPress = assetManager.get("art/button-press.png", Texture.class);
-            //batch.draw(textureButtonPress, 0, HEIGHT/2 - textureButtonPress.getHeight()/2);
+        if(phone.isNuked() || zapHand > 0)
+        {
+            Texture textureButtonPress = assetManager.get("art/button-press.png", Texture.class);
+            batch.draw(textureButtonPress, phone.isNuked() ? 0 : textureButtonPress.getWidth() * (zapHand - 1.0f),
+                    HEIGHT/2 - textureButtonPress.getHeight()/2);
 
-            //Texture textureNoise = assetManager.get("art/noise.png", Texture.class);
-            //batch.draw(textureNoise, 400, HEIGHT/2 - textureNoise.getHeight()/2);
-        //}
+            if(phone.isNuked())
+            {
+                Texture textureNoise = assetManager.get("art/noise.png", Texture.class);
+                batch.draw(textureNoise, 400, HEIGHT/2 - textureNoise.getHeight()/2);
+            }
+        }
         batch.end();
 
         if(battery > 0)
@@ -164,6 +217,28 @@ public class PlayScreen extends StageScreen {
                     HEIGHT - Gdx.input.getY() + 40);
             batch.end();
         }
+
+        if(endScreen > 0)
+        {
+            batch.begin();
+            batch.setColor(1, 1, 1, 1.0f - endScreen);
+            Texture textureEnd = assetManager.get("art/failure.png", Texture.class);
+            batch.draw(textureEnd, 0, 0);
+            batch.setColor(Color.WHITE);
+            batch.end();
+        }
+
+        if(!phone.isNuked())
+        {
+            String dislay = Double.toString(Math.floor(timeSinceStart * 10.0)/10.0);
+            lblTime.setText(dislay);
+            lblTimeFinal.setText(dislay);
+            this.lblTimeFinal.setX(WIDTH/2 - lblTimeFinal.getPrefWidth()/2);
+        }else{
+            batch.begin();
+            lblTimeFinal.draw(batch, 1 - endScreen);
+            batch.end();
+        }
     }
 
     @Override
@@ -183,6 +258,6 @@ public class PlayScreen extends StageScreen {
 
     @Override
     public void dispose() {
-
+        batch.dispose();
     }
 }

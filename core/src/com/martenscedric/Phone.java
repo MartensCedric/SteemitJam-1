@@ -46,13 +46,13 @@ public class Phone extends ScrollPane
 
         if(!nuked)
         {
-            boolean buttonPress = new Random().nextFloat() * 1000 < heat;
+            boolean buttonPress = new Random().nextFloat() * 5000 < heat;
 
             if(buttonPress)
                 onNukeButtonPress.handle();
         }
 
-        if(!nuked && timeSinceLastTweet > 8 - heat * 2)
+        if(!nuked && timeSinceLastTweet > 10 - heat * 2)
         {
             Author author = Author.values()[new Random().nextInt(2)];
 
@@ -79,6 +79,7 @@ public class Phone extends ScrollPane
                 heat+=tweet.getGeneratedHeat();
             }
 
+            heat *= 1.15f;
             timeSinceLastTweet = 0;
         }
     }
@@ -100,6 +101,10 @@ public class Phone extends ScrollPane
         nuked = true;
     }
 
+    public boolean isNuked()
+    {
+        return nuked;
+    }
 
     @Override
     public float getWidth() {

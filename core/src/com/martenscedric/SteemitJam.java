@@ -1,5 +1,6 @@
 package com.martenscedric;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 
@@ -23,13 +24,15 @@ public class SteemitJam extends SceneManager {
 		this.assetManager.load("art/switch_on.png", Texture.class);
 		this.assetManager.load("art/switch_off.png", Texture.class);
 		this.assetManager.load("art/button-background_animation.png", Texture.class);
+		this.assetManager.load("art/failure.png", Texture.class);
 
 		this.assetManager.finishLoading();
 
 		GameManager gameManager = new GameManager();
 		gameManager.assetManager = assetManager;
 		gameManager.sceneManager = this;
-
+		gameManager.soundMap.put("button-press", Gdx.audio.newSound(Gdx.files.internal("audio/button-press.wav")));
+		gameManager.soundMap.put("switch-flick", Gdx.audio.newSound(Gdx.files.internal("audio/switch-flick.wav")));
 		this.pushScreen(new PlayScreen(gameManager));
 	}
 

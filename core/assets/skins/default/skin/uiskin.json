@@ -3,6 +3,21 @@ com.badlogic.gdx.graphics.g2d.BitmapFont: {
 	default-font: {
 		file: default.fnt
 	}
+	munro14mono: {
+		file: munro14mono.fnt
+	}
+	munro18mono: {
+		file: munro18mono.fnt
+	}
+	munro192: {
+		file: munro192.fnt
+	}
+	munro24mono: {
+		file: munro24mono.fnt
+	}
+	munro48: {
+		file: munro48.fnt
+	}
 }
 com.badlogic.gdx.graphics.Color: {
 	green: {
@@ -98,9 +113,17 @@ com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
-		font: default-font
+		font: munro18mono
 		fontColor: white
 		background: default-round-large
+	}
+	displaytime: {
+		font: munro48
+		fontColor: white
+	}
+	displayfinal: {
+		font: munro192
+		fontColor: white
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {

@@ -22,6 +22,7 @@ public class Phone extends ScrollPane
     private List<Tweet> trumpTweets = new ArrayList<>();
     private List<Tweet> kimTweets = new ArrayList<>();
 
+    private OnNukeButtonPress onNukeButtonPress;
     private float heat = 0;
     private float timeSinceLastTweet = 10;
 
@@ -45,7 +46,10 @@ public class Phone extends ScrollPane
 
         if(!nuked)
         {
-            nuked = new Random().nextFloat() * 1000 < heat;
+            boolean buttonPress = new Random().nextFloat() * 1000 < heat;
+
+            if(buttonPress)
+                onNukeButtonPress.handle();
         }
 
         if(!nuked && timeSinceLastTweet > 8 - heat * 2)
@@ -86,6 +90,16 @@ public class Phone extends ScrollPane
         this.layout();
         this.scrollTo(0, 0, 0, 0);
     }
+
+    public void setOnNukeButtonPress(OnNukeButtonPress onNukeButtonPress) {
+        this.onNukeButtonPress = onNukeButtonPress;
+    }
+
+    public void stop()
+    {
+        nuked = true;
+    }
+
 
     @Override
     public float getWidth() {
@@ -150,10 +164,5 @@ public class Phone extends ScrollPane
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public boolean isNuked()
-    {
-        return nuked;
     }
 }

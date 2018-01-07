@@ -15,10 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.scenes.scene2d.utils.UIUtils;
-
-
-import javax.rmi.CORBA.Util;
 
 import static com.martenscedric.GameManager.HEIGHT;
 import static com.martenscedric.GameManager.WIDTH;
@@ -35,16 +31,28 @@ public class PlayScreen extends StageScreen {
     private boolean switchOn = false;
     private TextureRegionDrawable textureSwitchOn;
     private TextureRegionDrawable textureSwitchOff;
+    private Animator animator;
+    private AnimationSequence<TextureRegion> animElectric;
 
     public PlayScreen(GameManager gameManager) {
         super(gameManager);
         this.assetManager = gameManager.assetManager;
+        this.animator = new Animator();
+        this.animator.initializeAnimator(assetManager);
+        this.animElectric = new AnimationSequence<>();
+        this.animElectric.setAnimation(this.animator.get("electric_bg"));
         this.batch = new SpriteBatch();
         this.shapeRenderer = new ShapeRenderer();
         this.shapeRenderer.setAutoShapeType(true);
         this.phone = new Phone(gameManager, Utils.getDefaultSkin());
         this.phone.setX(WIDTH * 0.5f);
         this.phone.setY(HEIGHT/2 - phone.getHeight()/2 -10);
+        this.phone.setOnNukeButtonPress(() -> {
+            if(!switchOn || battery <= 0)
+            {
+                phone.stop();
+            }
+        });
 
         this.textureSwitchOn = new TextureRegionDrawable(new TextureRegion(assetManager.get("art/switch_on.png", Texture.class)));
         this.textureSwitchOff = new TextureRegionDrawable(new TextureRegion(assetManager.get("art/switch_off.png", Texture.class)));
@@ -52,7 +60,7 @@ public class PlayScreen extends StageScreen {
         ImageButton.ImageButtonStyle imgBtnStyle = new ImageButton.ImageButtonStyle(null, null, null, textureSwitchOff, null, textureSwitchOn);
         this.imageButton = new ImageButton(imgBtnStyle);
         this.imageButton.setX(200);
-        this.imageButton.setY(25);
+        this.imageButton.setY(15);
         this.imageButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -89,6 +97,7 @@ public class PlayScreen extends StageScreen {
             warningNuke = 3f;
         }
 
+        this.animElectric.update(delta);
         this.phone.update(delta);
         Gdx.gl.glClearColor(254f/255f, 231f/255f, 97f/255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -100,22 +109,26 @@ public class PlayScreen extends StageScreen {
         Texture textureBattery = assetManager.get("art/battery.png", Texture.class);
 
         batch.begin();
-        batch.draw(textureBtnBackground, 50, HEIGHT/2 - textureBtnBackground.getHeight()/2);
+        if(switchOn && battery > 0)
+        {
+            TextureRegion textureElectric = animElectric.getCurrentFrame();
+            batch.draw(textureElectric, 50, HEIGHT/2 - textureElectric.getRegionHeight()/2);
+        }else batch.draw(textureBtnBackground, 50, HEIGHT/2 - textureBtnBackground.getHeight()/2);
         batch.draw(textureNukeButton, 50, HEIGHT/2 - textureNukeButton.getHeight()/2);
         batch.draw(texturePhoneCover, 380, HEIGHT/2 - texturePhoneCover.getHeight()/2 + 1);
         batch.draw(textureSwitterBanner, 400, 520);
-        batch.draw(textureBattery, 25, 25);
+        batch.draw(textureBattery, 15, 15);
         batch.end();
         super.render(delta);
         batch.begin();
-        if(phone.isNuked())
-        {
-            Texture textureButtonPress = assetManager.get("art/button-press.png", Texture.class);
-            batch.draw(textureButtonPress, 0, HEIGHT/2 - textureButtonPress.getHeight()/2);
+        //if(phone.isNuked())
+        //{
+            //Texture textureButtonPress = assetManager.get("art/button-press.png", Texture.class);
+            //batch.draw(textureButtonPress, 0, HEIGHT/2 - textureButtonPress.getHeight()/2);
 
-            Texture textureNoise = assetManager.get("art/noise.png", Texture.class);
-            batch.draw(textureNoise, 400, HEIGHT/2 - textureNoise.getHeight()/2);
-        }
+            //Texture textureNoise = assetManager.get("art/noise.png", Texture.class);
+            //batch.draw(textureNoise, 400, HEIGHT/2 - textureNoise.getHeight()/2);
+        //}
         batch.end();
 
         if(battery > 0)
@@ -137,8 +150,8 @@ public class PlayScreen extends StageScreen {
             }
 
             shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.rect(30, 30, 39, 102 * battery, colorLight, colorLight, colorLight, colorLight);
-            shapeRenderer.rect(69, 30, 15, 102 * battery, colorDark, colorDark, colorDark, colorDark);
+            shapeRenderer.rect(20, 20, 39, 102 * battery, colorLight, colorLight, colorLight, colorLight);
+            shapeRenderer.rect(59, 20, 15, 102 * battery, colorDark, colorDark, colorDark, colorDark);
             shapeRenderer.end();
         }
 

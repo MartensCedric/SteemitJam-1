@@ -1,5 +1,6 @@
 package com.martenscedric;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -185,21 +186,14 @@ public class Phone extends ScrollPane
 
     private void readTweetFile(String filename, List<Tweet> list)
     {
-        int id = 0;
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(filename));
-            String line = br.readLine();
-
-            while (line != null) {
-                Tweet tweet = new Tweet();
-                tweet.setAuthor(filename.contains("trump.txt") ? Author.TRUMP :Author.KIM);
-                tweet.setContents(line);
-                tweet.setTweetId(id++);
-                list.add(tweet);
-                line = br.readLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        String[] messages = Gdx.files.internal(filename).readString().split("\n");
+        for(int i = 0; i < messages.length; i++)
+        {
+            Tweet tweet = new Tweet();
+            tweet.setAuthor(filename.contains("trump.txt") ? Author.TRUMP :Author.KIM);
+            tweet.setContents(messages[i]);
+            tweet.setTweetId(i);
+            list.add(tweet);
         }
     }
 }

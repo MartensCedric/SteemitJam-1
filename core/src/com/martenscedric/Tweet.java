@@ -3,9 +3,6 @@ package com.martenscedric;
 public class Tweet
 {
     private Author author;
-
-    //Retweets will start with (something)
-    //Linked media is done like this ~/media
     private String contents;
     private float generatedHeat;
     private float minHeat;

@@ -31,7 +31,7 @@ public class PlayScreen extends StageScreen {
     private Phone phone;
     private float battery = 1.0f;
     private float warningNuke = 0f;
-    private ImageButton imageButton;
+    private ImageButton imgBtnSwitch;
     private boolean switchOn = false;
     private TextureRegionDrawable textureSwitchOn;
     private TextureRegionDrawable textureSwitchOff;
@@ -42,6 +42,7 @@ public class PlayScreen extends StageScreen {
     private float timeSinceStart = 0;
     private Label lblTime;
     private Label lblTimeFinal;
+    private TextureRegion textureRegionNote;
 
     public PlayScreen(GameManager gameManager) {
         super(gameManager);
@@ -83,10 +84,10 @@ public class PlayScreen extends StageScreen {
         this.textureSwitchOff = new TextureRegionDrawable(new TextureRegion(assetManager.get("art/switch_off.png", Texture.class)));
 
         ImageButton.ImageButtonStyle imgBtnStyle = new ImageButton.ImageButtonStyle(null, null, null, textureSwitchOff, null, textureSwitchOn);
-        this.imageButton = new ImageButton(imgBtnStyle);
-        this.imageButton.setX(200);
-        this.imageButton.setY(15);
-        this.imageButton.addListener(new ClickListener(){
+        this.imgBtnSwitch = new ImageButton(imgBtnStyle);
+        this.imgBtnSwitch.setX(125);
+        this.imgBtnSwitch.setY(15);
+        this.imgBtnSwitch.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 switchOn = !switchOn;
@@ -99,9 +100,10 @@ public class PlayScreen extends StageScreen {
             }
         });
 
-        this.imageButton.setWidth(80);
-        this.imageButton.setHeight(112);
-        this.getStage().addActor(imageButton);
+        this.imgBtnSwitch.setWidth(80);
+        this.imgBtnSwitch.setHeight(112);
+        this.textureRegionNote = new TextureRegion(assetManager.get("art/note.png", Texture.class));
+        this.getStage().addActor(imgBtnSwitch);
         this.getStage().addActor(phone);
         this.getStage().addActor(lblTime);
         this.getStage().addActor(lblTimeFinal);
@@ -156,6 +158,7 @@ public class PlayScreen extends StageScreen {
         Texture texturePhoneCover = assetManager.get("art/phone-cover.png", Texture.class);
         Texture textureSwitterBanner = assetManager.get("art/switter-banner.png", Texture.class);
         Texture textureBattery = assetManager.get("art/battery.png", Texture.class);
+        Texture textureCoffee = assetManager.get("art/coffee.png", Texture.class);
 
         batch.begin();
         if(switchOn && battery > 0)
@@ -163,10 +166,12 @@ public class PlayScreen extends StageScreen {
             TextureRegion textureElectric = animElectric.getCurrentFrame();
             batch.draw(textureElectric, 50, HEIGHT/2 - textureElectric.getRegionHeight()/2);
         }else batch.draw(textureBtnBackground, 50, HEIGHT/2 - textureBtnBackground.getHeight()/2);
+
         batch.draw(textureNukeButton, 50, HEIGHT/2 - textureNukeButton.getHeight()/2);
         batch.draw(texturePhoneCover, 380, HEIGHT/2 - texturePhoneCover.getHeight()/2 + 1);
         batch.draw(textureSwitterBanner, 400, 520);
         batch.draw(textureBattery, 15, 15);
+        batch.draw(textureCoffee, 75, HEIGHT - 150);
         batch.end();
         super.render(delta);
         batch.begin();
@@ -182,6 +187,8 @@ public class PlayScreen extends StageScreen {
                 batch.draw(textureNoise, 400, HEIGHT/2 - textureNoise.getHeight()/2);
             }
         }
+        batch.draw(textureRegionNote, 285, -50, textureRegionNote.getRegionWidth()/2, textureRegionNote.getRegionHeight()/2,
+                textureRegionNote.getRegionWidth(), textureRegionNote.getRegionHeight(), 1, 1, -10f);
         batch.end();
 
         if(battery > 0)

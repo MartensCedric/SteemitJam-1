@@ -25,6 +25,8 @@ public class SteemitJam extends SceneManager {
 		this.assetManager.load("art/switch_off.png", Texture.class);
 		this.assetManager.load("art/button-background_animation.png", Texture.class);
 		this.assetManager.load("art/failure.png", Texture.class);
+		this.assetManager.load("art/note.png", Texture.class);
+		this.assetManager.load("art/coffee.png", Texture.class);
 
 		this.assetManager.finishLoading();
 
@@ -33,6 +35,7 @@ public class SteemitJam extends SceneManager {
 		gameManager.sceneManager = this;
 		gameManager.soundMap.put("button-press", Gdx.audio.newSound(Gdx.files.internal("audio/button-press.wav")));
 		gameManager.soundMap.put("switch-flick", Gdx.audio.newSound(Gdx.files.internal("audio/switch-flick.wav")));
+		gameManager.soundMap.put("message", Gdx.audio.newSound(Gdx.files.internal("audio/message.wav")));
 		this.pushScreen(new PlayScreen(gameManager));
 	}
 

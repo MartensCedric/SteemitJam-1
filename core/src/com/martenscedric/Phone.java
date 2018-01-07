@@ -52,20 +52,63 @@ public class Phone extends ScrollPane
 
         if(!nuked && timeSinceLastTweet > 10 - heat * 2)
         {
-            Author author = Author.values()[new Random().nextInt(2)];
+            //An auto reply to kim's tweet "nuke on desk tweet"
+            //This code is reallly bad please ignore, it's only "acceptable" because
+            //it's game jam code and it was made in a very short time frame
 
-            List<Tweet> availableTweets = new ArrayList<>(author == Author.TRUMP ? trumpTweets : kimTweets);
-            availableTweets.removeIf(t -> t.getMinHeat() > heat);
+            final boolean[] trumpReplied = {true};
+            final boolean[] kimHasNukeDeskTweet = {false};
 
-            if(!availableTweets.isEmpty())
+            int idReply = 17;
+            int idKimTweet = 6;
+
+            trumpTweets.forEach(t -> {
+                if(t.getTweetId() == idReply)
+                {
+                    trumpReplied[0] = false;
+                }
+            });
+
+            kimTweets.forEach(t -> {
+                if(t.getTweetId() == idKimTweet)
+                {
+                    kimHasNukeDeskTweet[0] = true;
+                }
+            });
+
+            if(!kimHasNukeDeskTweet[0] && !trumpReplied[0])
             {
-                Tweet tweet = availableTweets.get(new Random().nextInt(availableTweets.size()));
-                if(author == Author.TRUMP)
-                    trumpTweets.removeIf(t -> t.getTweetId() == tweet.getTweetId());
-                else kimTweets.removeIf(t -> t.getTweetId() == tweet.getTweetId());
+                Tweet tweet = null;
 
+                for(Tweet t : trumpTweets)
+                {
+                    if(t.getTweetId() == idReply)
+                    {
+                        tweet = t;
+                        break;
+                    }
+                }
+
+                trumpTweets.removeIf(t -> t.getTweetId() == idReply);
                 addTweet(tweet);
                 heat += tweet.getGeneratedHeat();
+
+            }else{
+                Author author = Author.values()[new Random().nextInt(2)];
+
+                List<Tweet> availableTweets = new ArrayList<>(author == Author.TRUMP ? trumpTweets : kimTweets);
+                availableTweets.removeIf(t -> t.getMinHeat() > heat);
+
+                if(!availableTweets.isEmpty())
+                {
+                    Tweet tweet = availableTweets.get(new Random().nextInt(availableTweets.size()));
+                    if(author == Author.TRUMP)
+                        trumpTweets.removeIf(t -> t.getTweetId() == tweet.getTweetId());
+                    else kimTweets.removeIf(t -> t.getTweetId() == tweet.getTweetId());
+
+                    addTweet(tweet);
+                    heat += tweet.getGeneratedHeat();
+                }
             }
 
             heat *= 1.15f;
@@ -79,6 +122,7 @@ public class Phone extends ScrollPane
         this.messageTable.row();
         this.layout();
         this.scrollTo(0, 0, 0, 0);
+        gameManager.soundMap.get("message").play(0.15f, 1, 0);
     }
 
     public void setOnNukeButtonPress(OnNukeButtonPress onNukeButtonPress) {
@@ -108,7 +152,6 @@ public class Phone extends ScrollPane
     private class TweetWidget extends WidgetGroup
     {
         private Image profilePic;
-        private boolean media;
         private Label lblText;
 
         public TweetWidget(Tweet tweet, Skin skin)

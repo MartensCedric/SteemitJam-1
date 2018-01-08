@@ -13,6 +13,7 @@ public class DesktopLauncher {
 		config.width = 800;
 		config.height = 600;
 		config.title = "My Bigger Button";
+		config.resizable = false;
 		config.addIcon("icons/trump-128.png", Files.FileType.Internal);
 		config.addIcon("icons/trump-32.png", Files.FileType.Internal);
 		config.addIcon("icons/trump-16.png", Files.FileType.Internal);
